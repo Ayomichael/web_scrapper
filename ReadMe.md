@@ -25,7 +25,7 @@ cd instagram-scraper
 pip install -r requirements.txt
 
 **UnitTest:**
-you can run unit test to confirm is properly setup (optional)
+you can run unit test to confirm the project is properly setup (optional)
 python -m unittest test_app.py
 
 **Run the App:**
