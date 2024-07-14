@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Scraping</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Instagram Scraper</h1>
+      <form id="urlForm">
+        <div>
+          <label for="username">Enter IG username:</label>
+          <input type="text" id="username" name="username" placeholder="username" required />
+        </div>
+        <div>
+          <label for="password">Enter IG password:</label>
+          <input type="password" id="password" name="password" placeholder="password" required />
+        </div>
+        <div>
+          <label for="url">Enter Url:</label>
+          <input type="text" id="url" name="url" placeholder="https://instagram.com/example" required />
+        </div>
+        <button id="submit" type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('urlForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const formData = {
+            url: document.getElementById('url').value,
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+          };
+
+          fetch('/scrape', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.error) {
+              alert('Error: ' + data.error);
+            } else {
+              alert(data.message);
+              if (data.file) {
+                window.location.href = '/download/' + data.file;
+              }
+            }
+          })
+          .catch(error => {
+            alert('An error occurred: ' + error.message);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
